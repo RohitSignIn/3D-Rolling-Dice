@@ -1,0 +1,130 @@
+$bgCol: linear-gradient(#FF9F9F, #FFFAD7);
+$grdCol1: #E97777;
+$grdCol2: #FCDDB0;
+$fontCol: #fff;
+$fontSize: 8rem;
+$diceSize: 200px;
+$border: 6px solid #FCDDB0;
+
+@keyframes topcirc{
+    0%{
+        top: -100%;
+        left: -100%;
+    }
+    100%{
+        top: -30%;
+        left: -10%;
+    }
+}
+@keyframes btmcirc{
+    0%{
+        bottom: -100%;
+        right: -100%;
+    }
+    100%{
+        bottom: -30%;
+        right: -10%;
+    }
+}
+
+@mixin diceFace {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient($grdCol1, $grdCol2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $fontCol;
+    font-size: $fontSize;
+    transform-style: preserve-3d;
+    box-sizing: border-box;
+    border: $border;
+    text-shadow: 0 0 10px #FCDDB0, 0 0 20px #FCDDB0, 0 0 30px;
+}
+@mixin disFlex { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    body{
+        overflow: hidden;
+        @include disFlex();
+        background: $bgCol;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        p{
+            position: absolute;
+            top: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px #FCDDB0, 0 0 20px #FCDDB0, 0 0 30px;
+        }
+        .container{
+            @include disFlex();
+            gap: 10px;
+            transform: rotateY(30deg) rotateX(10deg);
+            .text{
+                position: relative;
+                width: $diceSize;
+                height: $diceSize;
+                transform-style: preserve-3d;
+                transition: .5s ease-in-out;
+                cursor: pointer;
+                span{
+                    @include diceFace();
+                    transform: rotateX(calc(90deg * var(--i))) translateZ(calc($diceSize/2));
+                }
+                &::before{
+                    content: "5";
+                    position: absolute;
+                    @include diceFace();
+                    transform-origin: left;
+                    transform: rotateY(270deg) translateX(calc(-1 * ($diceSize/2)));
+                }
+                &::after{
+                    content: "6";
+                    position: absolute;
+                    @include diceFace();
+                    transform-origin: right;
+                    transform: rotateY(90deg) translateX(calc($diceSize/2));
+                }
+            }
+            // &:hover .text{
+            //     transform: rotateY(-360deg) rotateX(360deg);
+            // }
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 30%;
+            height: 600px;
+            background: linear-gradient(#E97777, #FCDDB0);
+            border-radius: 80%;
+            box-shadow: 10px 10px 24px -7px rgba(0,0,0,0.75);
+            animation: topcirc 0.4s ease 0s 1 normal forwards;
+        }
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: -100%;
+            right: -100%;
+            width: 30%;
+            height: 600px;
+            background: linear-gradient(#FCDDB0, #E97777);
+            border-radius: 80%;
+            box-shadow: -16px -11px 24px -7px rgba(0,0,0,0.75);
+            animation: btmcirc 0.4s ease 0s 1 normal forwards;
+        }
+    }
+}
